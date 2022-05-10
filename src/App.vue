@@ -1,13 +1,23 @@
-<script setup lang="ts">
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
-import HelloWorld from './components/HelloWorld.vue'
-</script>
-
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <HelloWorld msg="Hello Vue 3 + TypeScript + Vite" />
+  <button @click="start()">start</button>
+  <button @click="pause()">pause</button>
+  <button @click="reset()">reset</button>
+  {{ current }}
 </template>
+
+<script setup>
+import { onMounted, ref, watch } from "vue";
+import { useCountDown } from "./utils/useCountDown.js";
+
+const time = ref(30 * 60 * 60 * 1000);
+const { start, pause, reset, current } = useCountDown(time.value);
+
+const resetTime = () => {
+  reset(+time.value);
+};
+watch(() => time.value, resetTime, { immediate: true });
+onMounted(() => {});
+</script>
 
 <style>
 #app {
